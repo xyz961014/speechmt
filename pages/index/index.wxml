@@ -1,0 +1,10 @@
+<!--index.wxml-->
+<view class="container">
+  <button wx:if='{{!recordingbool}}' type='primary' bindtap='onRecord'>录音</button>
+  <button wx:else type='warn' bindtap='onStop'>停止</button>
+  <view class="usermotto">
+    <text class="user-motto">{{text}}</text>
+  </view>
+  <button wx:if='{{!isplay}}' type='primary' bindtap='onvoiceplay'>play</button>
+  <button wx:else type='warn' bindtap='onvoicestop'>stop</button>
+</view>
