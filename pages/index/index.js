@@ -15,12 +15,15 @@ const options = {
 
 Page({
   data: {
-    text: 'Hello World',
+    text: '欢迎使用至尊翻译',
     myopenid: '',
     recordingbool: false,
     isplay: false,
     sourcepath: '',
-    resultpath: ''
+    resultpath: '',
+    logourl0: '../../images/logo3.png',
+    logourl1: '../../images/logo4.png',
+    autoplay: true
   },
   //事件处理函
   onLoad: function () {
@@ -54,11 +57,14 @@ Page({
           filePath: thisp.data.resultpath
         });
         thisp.setData({
-          resultpath: ''
+          resultpath: ' '
         });
       }
     });
     recorderManager.onStop((res) => {
+      wx.showLoading({
+        title: '翻译中',
+      })
       var curP = getCurrentPages();
       var thisp = curP[curP.length - 1];
       var tempFilePath = res.tempFilePath;
@@ -79,43 +85,57 @@ Page({
               openid: res.data
             },
             success: function (res2) {
+              wx.hideLoading();
               console.log(res2);
               thisp.setData({
                 text:res2.data
               });
-              
-              // wx.downloadFile({
-              //   url: 'https://234.collemt.club/server/audio/' + res.openid + '.mp3', 
-              //   success: function (res3) {
-              //     // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
-              //     if (res3.statusCode === 200) {
-              //       thisp.setData({
-              //         resultpath: res3.tempFilePath
-              //       })
-              //     }
-              //   }
-              // });
-            }
-          });
-          wx.downloadFile({
-            url: 'https://234.collemt.club/oNGYI0fq7ewHsoUM_apTA9N0EmZ4.mp3',
-            success: function (res3) {
-              console.log(res3);
-              if (res3.statusCode === 200) {
-                wx.saveFile({
-                  tempFilePath: res3.tempFilePath,
-                  success: function(res4) {
-                    thisp.setData({
-                      resultpath: res4.savedFilePath
-                    })
+              wx.showLoading({
+                title: '下载音频中',
+              })
+              wx.downloadFile({
+                url: 'https://234.collemt.club/onFetch/' + res.data + '.mp3',
+                success: function (res3) {
+                  // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
+                  if (res3.statusCode == 200) {
+                    
+                    wx.saveFile({
+                      tempFilePath: res3.tempFilePath,
+                      success: function (res4) {
+                        thisp.setData({
+                          resultpath: res4.savedFilePath
+                        });
+                        console.log(thisp.data.resultpath);
+                        if (thisp.data.autoplay)
+                          thisp.onvoiceplay();
+                      }
+                    });
+                    wx.hideLoading();
+                    
                   }
-                })
-              }
-            },
-            fail: function() {
-              console.log('df');
+                }
+              });
             }
           });
+          // wx.downloadFile({
+          //   url: 'https://234.collemt.club/oNGYI0fq7ewHsoUM_apTA9N0EmZ4.mp3',
+          //   success: function (res3) {
+          //     console.log(res3);
+          //     if (res3.statusCode === 200) {
+          //       wx.saveFile({
+          //         tempFilePath: res3.tempFilePath,
+          //         success: function(res4) {
+          //           thisp.setData({
+          //             resultpath: res4.savedFilePath
+          //           })
+          //         }
+          //       })
+          //     }
+          //   },
+          //   fail: function() {
+          //     console.log('df');
+          //   }
+          // });
           console.log('result',thisp.data.resultpath);
         }
       });
@@ -183,21 +203,21 @@ Page({
       var curP = getCurrentPages();
       var thisp = curP[curP.length - 1];
       thisp.setData({
-        Isplay: true
+        isplay: true
       });
     });
     innerAudioContext.onStop(() => {
       var curP = getCurrentPages();
       var thisp = curP[curP.length - 1];
       thisp.setData({
-        Isplay: false
+        isplay: false
       });
     });
     innerAudioContext.onEnded(() => {
       var curP = getCurrentPages();
       var thisp = curP[curP.length - 1];
       thisp.setData({
-        Isplay: false
+        isplay: false
       });
     })
   },
@@ -209,11 +229,17 @@ Page({
   },
   onvoiceplay: function() {
     if (this.data.resultpath != '') {
-      innerAudioContext.src = this.dataresultpath;
+      innerAudioContext.src = this.data.resultpath;
       innerAudioContext.play();
     }
   },
   onvoicestop: function() {
     innerAudioContext.stop();
+  },
+  switchChange: function() {
+    this.setData({
+      autoplay: !this.data.autoplay
+    });
+    console.log(this.data.autoplay);
   }
 })

@@ -1,10 +1,30 @@
 <!--index.wxml-->
-<view class="container">
-  <button wx:if='{{!recordingbool}}' type='primary' bindtap='onRecord'>录音</button>
-  <button wx:else type='warn' bindtap='onStop'>停止</button>
-  <view class="usermotto">
-    <text class="user-motto">{{text}}</text>
+<view class="btn" hover-class='btnhover'>
+    <view wx:if='{{!recordingbool}}'>
+        <image class="btnimg" src="{{logourl0}}" background-size="cover" bindtap='onRecord'></image>
+    </view>
+    <view wx:else>
+        <image class="btnimg" src="{{logourl1}}" background-size="cover" bindtap='onStop'></image>
+    </view>
   </view>
-  <button wx:if='{{!isplay}}' type='primary' bindtap='onvoiceplay'>play</button>
-  <button wx:else type='warn' bindtap='onvoicestop'>stop</button>
+<view class='txt'>
+  <text wx:if='{{!recordingbool}}'>点击来录音</text>
+  <text wx:else>点击来停止</text>
 </view>
+<view class="page">
+  
+  <view class="weui-article__h1">{{text}}</view>
+  <block wx:if='{{resultpath}}'>
+  <button wx:if='{{!isplay}}' type='primary' bindtap='onvoiceplay'>播放</button>
+  <button wx:else type='warn' bindtap='onvoicestop'>停止</button>
+  </block>
+</view>
+
+        <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_switch">
+                <view class="weui-cell__bd">自动播放</view>
+                <view class="weui-cell__ft">
+                    <switch checked bindchange="switchChange"/>
+                </view>
+            </view>
+        </view>
