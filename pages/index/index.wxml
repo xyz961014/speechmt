@@ -1,26 +1,38 @@
 <!--index.wxml-->
-<view class="btn" hover-class='btnhover'>
-    <view wx:if='{{!recordingbool}}'>
-        <image class="btnimg" src="{{logourl0}}" background-size="cover" bindtap='onRecord'></image>
+<view class="weui-cells__title">中文：</view>
+ <view class="weui-panel">
+         <view class="weui-panel__bd">
+                <view class="weui-media-box weui-media-box_text">
+                  <view class="weui-media-box__titly weui-media-box__title_in-texty">{{sourcetext}}</view>                    
+                </view>
+            </view>
+        </view>
+<view class="weui-cells__title">英文：</view>
+ <view class="weui-panel">
+         <view class="weui-panel__bd">
+                <view class="weui-media-box weui-media-box_text">
+                  <view class="weui-media-box__titly weui-media-box__title_in-texty">{{resulttext}}</view>                    
+                </view>
+            </view>
+        </view>
+ <view wx:if="{{resultpath}}" class="weui-form-preview">
+    <view class="weui-form-preview__ft">               
+                <block wx:if='{{!isplay}}'>
+                <view  bindtap='onvoiceplay' class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">播放</view>
+                </block>
+                <view wx:else bindtap='onvoicestop' class="weui-form-preview__btn weui-form-preview__btn_stop" hover-class="weui-form-preview__btn_active">停止</view>
+                
+                
+            </view>
     </view>
-    <view wx:else>
-        <image class="btnimg" src="{{logourl1}}" background-size="cover" bindtap='onStop'></image>
+<view class="btn">
+    <view hover-class='btnhover'  bindtouchstart='onRecord' bindtouchend='onStop'>
+        <image class="btnimg" src="{{logourl}}" background-size="cover"></image>
     </view>
-  </view>
-<view class='txt'>
-  <text wx:if='{{!recordingbool}}'>点击来录音</text>
-  <text wx:else>点击来停止</text>
-</view>
-<view class="page">
-  
-  <view class="weui-article__h1">{{text}}</view>
-  <block wx:if='{{resultpath}}'>
-  <button wx:if='{{!isplay}}' type='primary' bindtap='onvoiceplay'>播放</button>
-  <button wx:else type='warn' bindtap='onvoicestop'>停止</button>
-  </block>
-</view>
 
-        <view class="weui-cells weui-cells_after-title">
+  </view>
+   <text class='txt'>按住来翻译</text>
+<view class="weui-cells weui-cells_after-title">
             <view class="weui-cell weui-cell_switch">
                 <view class="weui-cell__bd">自动播放</view>
                 <view class="weui-cell__ft">
@@ -28,3 +40,4 @@
                 </view>
             </view>
         </view>
+        

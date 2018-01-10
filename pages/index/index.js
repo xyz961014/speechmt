@@ -15,14 +15,17 @@ const options = {
 
 Page({
   data: {
-    text: '欢迎使用至尊翻译',
+    sourcetext: '欢迎使用语音翻译',
+    resulttext: 'Welcome to use supermt',
     myopenid: '',
     recordingbool: false,
     isplay: false,
     sourcepath: '',
     resultpath: '',
-    logourl0: '../../images/logo3.png',
+    logourl: '../../images/logo3.png',
     logourl1: '../../images/logo4.png',
+    playurl: '../../images/music03.png',
+    stopurl: '../../images/music09.png',
     autoplay: true
   },
   //事件处理函
@@ -42,7 +45,8 @@ Page({
       var curP = getCurrentPages();
       var thisp = curP[curP.length - 1];
       thisp.setData({
-        recordingbool: true
+        recordingbool: true,
+        logourl: '../../images/logo4.png'
       });
       if (thisp.data.sourcepath != '') {
         wx.removeSavedFile({
@@ -70,7 +74,8 @@ Page({
       var tempFilePath = res.tempFilePath;
       thisp.setData({
         sourcepath: tempFilePath,
-        recordingbool: false
+        recordingbool: false,
+        logourl: '../../images/logo3.png'
       });
       console.log(tempFilePath);
       wx.getStorage({
@@ -87,8 +92,10 @@ Page({
             success: function (res2) {
               wx.hideLoading();
               console.log(res2);
+              var data = JSON.parse(res2.data);
               thisp.setData({
-                text:res2.data
+                sourcetext:data.zh,
+                resulttext:data.en
               });
               wx.showLoading({
                 title: '下载音频中',

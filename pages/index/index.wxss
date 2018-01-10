@@ -3,20 +3,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 128rpx;
-  margin-left: 230rpx;
-  margin-right: 230rpx;
-  border-radius: 100%;
+  margin-top: 20rpx;
+  border-radius: 50%;
 }
 .txt{
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 20rpx;
-}
-.page{
-  margin: 20rpx;
-  margin-top: 200rpx;
+  margin-bottom: 50rpx;
 }
 .weui-article__h1{
   display: flex;
@@ -25,19 +19,25 @@
   font-size: 45rpx;
 }
 .btnimg {
-  width: 250rpx;
-  height: 250rpx;
+  width: 200rpx;
+  height: 200rpx;
   margin: 20rpx;
   border-radius: 50%;
 }
 .btnhover{
+  border-radius: 50%;
   background-color: #EEEEEE;
 }
 
-.userinfo-nickname {
-  color: black;
-}
 
 .weui-btn{
   margin: 20rpx;
 }
+
+  .weui-media-box__title_in-texty{
+    font-size: 22px;
+  }
+
+  .weui-media-box__titly{
+    padding-bottom: 80rpx;
+  }
