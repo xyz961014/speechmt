@@ -15,6 +15,7 @@ const options = {
 
 Page({
   data: {
+    prevtext: '欢迎使用语音翻译',
     sourcetext: '欢迎使用语音翻译',
     resulttext: 'Welcome to use supermt',
     myopenid: '',
@@ -94,6 +95,7 @@ Page({
               console.log(res2);
               var data = JSON.parse(res2.data);
               thisp.setData({
+                prevtext:data.zh,
                 sourcetext:data.zh,
                 resulttext:data.en
               });
@@ -248,5 +250,66 @@ Page({
       autoplay: !this.data.autoplay
     });
     console.log(this.data.autoplay);
+  },
+  textareaconfirm: function(e) {
+    var txt = e.detail.value;
+    //TODO: 
+    console.log(txt);
+    if (txt != this.data.prevtext) {
+      this.setData({
+        prevtext: txt
+      })
+      wx.showLoading({
+        title: '翻译中',
+      })
+      wx.getStorage({
+        key: 'MyOpenid',
+        success: function (res) {
+          var curP = getCurrentPages();
+          var thisp = curP[curP.length - 1];
+          wx.request({
+            url: 'https://234.collemt.club/onEdit',
+            data: {
+              openid: res.data,
+              text: txt
+            },
+            success: function (res2) {
+              wx.hideLoading();
+              console.log(res2.data);
+              var data = res2.data;
+              thisp.setData({
+                resulttext: data.en
+              });
+              wx.showLoading({
+                title: '下载音频中',
+              })
+              wx.downloadFile({
+                url: 'https://234.collemt.club/onFetch/' + res.data + '.mp3',
+                success: function (res3) {
+                  // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
+                  if (res3.statusCode == 200) {
+
+                    wx.saveFile({
+                      tempFilePath: res3.tempFilePath,
+                      success: function (res4) {
+                        thisp.setData({
+                          resultpath: res4.savedFilePath
+                        });
+                        console.log(thisp.data.resultpath);
+                        if (thisp.data.autoplay)
+                          thisp.onvoiceplay();
+                      }
+                    });
+                    wx.hideLoading();
+
+                  }
+                }
+              });
+            }
+          })
+        },
+      })
+    }
+    
   }
 })

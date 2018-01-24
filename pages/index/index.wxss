@@ -36,6 +36,7 @@
 
   .weui-media-box__title_in-texty{
     font-size: 22px;
+    height: 120rpx;
   }
 
   .weui-media-box__titly{

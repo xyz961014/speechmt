@@ -2,9 +2,7 @@
 <view class="weui-cells__title">中文：</view>
  <view class="weui-panel">
          <view class="weui-panel__bd">
-                <view class="weui-media-box weui-media-box_text">
-                  <view class="weui-media-box__titly weui-media-box__title_in-texty">{{sourcetext}}</view>                    
-                </view>
+           <textarea class="weui-media-box weui-media-box_text weui-media-box__titly weui-media-box__title_in-texty" value='{{sourcetext}}' show-confirm-bar='true' bindconfirm='textareaconfirm' bindblur='textareaconfirm'></textarea>         
             </view>
         </view>
 <view class="weui-cells__title">英文：</view>
@@ -26,7 +24,7 @@
             </view>
     </view>
 <view class="btn">
-    <view hover-class='btnhover'  bindtouchstart='onRecord' bindtouchend='onStop'>
+    <view hover-class='btnhover'  bindtouchstart='onRecord' bindtouchend='onStop' bindtouchcancel='onStop'>
         <image class="btnimg" src="{{logourl}}" background-size="cover"></image>
     </view>
 
