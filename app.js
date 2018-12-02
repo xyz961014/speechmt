@@ -22,9 +22,9 @@ App({
               // console.log(res.data);
               wx.setStorageSync('MyOpenid', res.data);
               console.log(wx.getStorageSync('MyOpenid'));
-              if(this.openidCallback){
-                this.openidCallback(res.data);
-              }
+              // if(this.openidCallback){
+              //   this.openidCallback(res.data);
+              // }
             }
           })
         } else {

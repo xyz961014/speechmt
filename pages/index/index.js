@@ -15,9 +15,51 @@ const options = {
 
 Page({
   data: {
-    prevtext: '欢迎使用语音翻译',
-    sourcetext: '欢迎使用语音翻译',
-    resulttext: 'Welcome to use supermt',
+    lan: '中文',
+    languages: ['中文', 'English'],
+    lanIndex: 0,
+    text: {
+      lan: 'language',
+      prevtext: '欢迎使用语音翻译',
+      sourcetext: '欢迎使用语音翻译',
+      resulttext: 'Welcome to use SpeechMT',
+      src: '中文',
+      res: '英文',
+      play: '播放',
+      stop: '停止',
+      recordtxt: '按住来翻译',
+      autoplay: '自动播放',
+      translating: '翻译中',
+      downloading: '下载音频中',
+    },
+    zh: {
+      lan: 'language',
+      prevtext: '欢迎使用语音翻译',
+      sourcetext: '欢迎使用语音翻译',
+      resulttext: 'Welcome to use SpeechMT',
+      src: '中文',
+      res: '英文',
+      play: '播放',
+      stop: '停止',
+      recordtxt: '按住来翻译',
+      autoplay: '自动播放',
+      translating: '翻译中',
+      downloading: '下载音频中',
+    },
+    en: {
+      lan: 'language',
+      prevtext: 'Welcome to use SpeechMT',
+      sourcetext: 'Welcome to use SpeechMT',
+      resulttext: '欢迎使用语音翻译',
+      src: 'English',
+      res: 'Chinese',
+      play: 'play',
+      stop: 'stop',
+      recordtxt: 'hold to interpret',
+      autoplay: 'Autoplay',
+      translating: 'translating',
+      downloading: 'downloading',
+    },
     myopenid: '',
     recordingbool: false,
     isplay: false,
@@ -67,11 +109,12 @@ Page({
       }
     });
     recorderManager.onStop((res) => {
-      wx.showLoading({
-        title: '翻译中',
-      })
+     
       var curP = getCurrentPages();
       var thisp = curP[curP.length - 1];
+      wx.showLoading({
+        title: thisp.data.text.translating,
+      })
       var tempFilePath = res.tempFilePath;
       thisp.setData({
         sourcepath: tempFilePath,
@@ -84,26 +127,26 @@ Page({
         success: res => {
           console.log(res.data);
           wx.uploadFile({
-            url: 'https://234.collemt.club/onUpload',
+            url: 'https://234.collemt.club:3891/onUpload',
             filePath: this.data.sourcepath,
             name: 'voices',
             formData: {
-              openid: res.data
+              openid: res.data,
             },
             success: function (res2) {
               wx.hideLoading();
               console.log(res2);
               var data = JSON.parse(res2.data);
               thisp.setData({
-                prevtext:data.zh,
-                sourcetext:data.zh,
-                resulttext:data.en
+                'text.prevtext':data.zh,
+                'text.sourcetext':data.zh,
+                'text.resulttext':data.en
               });
               wx.showLoading({
-                title: '下载音频中',
+                title: thisp.data.text.downloading,
               })
               wx.downloadFile({
-                url: 'https://234.collemt.club/onFetch/' + res.data + '.mp3',
+                url: 'https://234.collemt.club:3891/onFetch/' + res.data + '.mp3',
                 success: function (res3) {
                   // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
                   if (res3.statusCode == 200) {
@@ -255,12 +298,12 @@ Page({
     var txt = e.detail.value;
     //TODO: 
     console.log(txt);
-    if (txt != this.data.prevtext) {
+    if (txt != this.data.text.prevtext) {
       this.setData({
-        prevtext: txt
+        'text.prevtext': txt
       })
       wx.showLoading({
-        title: '翻译中',
+        title: this.data.text.translating,
       })
       wx.getStorage({
         key: 'MyOpenid',
@@ -268,7 +311,7 @@ Page({
           var curP = getCurrentPages();
           var thisp = curP[curP.length - 1];
           wx.request({
-            url: 'https://234.collemt.club/onEdit',
+            url: 'https://234.collemt.club:3891/onEdit',
             data: {
               openid: res.data,
               text: txt
@@ -278,13 +321,13 @@ Page({
               console.log(res2.data);
               var data = res2.data;
               thisp.setData({
-                resulttext: data.en
+                'text.resulttext': data.en
               });
               wx.showLoading({
-                title: '下载音频中',
+                title: this.data.text.downloading,
               })
               wx.downloadFile({
-                url: 'https://234.collemt.club/onFetch/' + res.data + '.mp3',
+                url: 'https://234.collemt.club:3891/onFetch/' + res.data + '.mp3',
                 success: function (res3) {
                   // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
                   if (res3.statusCode == 200) {
@@ -311,5 +354,21 @@ Page({
       })
     }
     
+  },
+  bindlanChange: function(e) {
+    this.setData({
+      lanIndex: e.detail.value,
+      lan: this.data.languages[e.detail.value]
+    });
+    if (e.detail.value == 0) {
+      this.setData({
+        text: this.data.zh
+      });
+    }
+    else if (e.detail.value == 1) {
+      this.setData({
+        text: this.data.en
+      });
+    }
   }
 })

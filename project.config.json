@@ -1,16 +1,16 @@
 {
 	"description": "项目配置文件。",
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "1.9.1",
+	"libVersion": "2.3.2",
 	"appid": "wxcba0e774cc93a392",
-	"projectname": "Initial-version",
+	"projectname": "SpeechMT",
 	"condition": {
 		"search": {
 			"current": -1,

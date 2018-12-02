@@ -1,24 +1,24 @@
 <!--index.wxml-->
-<view class="weui-cells__title">中文：</view>
+<view class="weui-cells__title">{{text.src}}:</view>
  <view class="weui-panel">
-         <view class="weui-panel__bd">
-           <textarea class="weui-media-box weui-media-box_text weui-media-box__titly weui-media-box__title_in-texty" value='{{sourcetext}}' show-confirm-bar='true' bindconfirm='textareaconfirm' bindblur='textareaconfirm'></textarea>         
+         <view class="weui-panel__bd weui-media-box weui-media-box_text "> 
+           <textarea class="weui-media-box__titly weui-media-box__title_in-texty" value='{{text.sourcetext}}' show-confirm-bar='true' bindconfirm='textareaconfirm' bindblur='textareaconfirm'></textarea>         
             </view>
         </view>
-<view class="weui-cells__title">英文：</view>
+<view class="weui-cells__title">{{text.res}}:</view>
  <view class="weui-panel">
          <view class="weui-panel__bd">
                 <view class="weui-media-box weui-media-box_text">
-                  <view class="weui-media-box__titly weui-media-box__title_in-texty">{{resulttext}}</view>                    
+                  <view class="weui-media-box__titly weui-media-box__title_in-texty">{{text.resulttext}}</view>                    
                 </view>
             </view>
         </view>
  <view wx:if="{{resultpath}}" class="weui-form-preview">
     <view class="weui-form-preview__ft">               
                 <block wx:if='{{!isplay}}'>
-                <view  bindtap='onvoiceplay' class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">播放</view>
+                <view  bindtap='onvoiceplay' class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">{{text.play}}</view>
                 </block>
-                <view wx:else bindtap='onvoicestop' class="weui-form-preview__btn weui-form-preview__btn_stop" hover-class="weui-form-preview__btn_active">停止</view>
+                <view wx:else bindtap='onvoicestop' class="weui-form-preview__btn weui-form-preview__btn_stop" hover-class="weui-form-preview__btn_active">{{text.stop}}</view>
                 
                 
             </view>
@@ -29,13 +29,24 @@
     </view>
 
   </view>
-   <text class='txt'>按住来翻译</text>
+   <text class='txt'>{{text.recordtxt}}</text>
 <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell weui-cell_switch">
-                <view class="weui-cell__bd">自动播放</view>
+                <view class="weui-cell__bd">{{text.autoplay}}</view>
                 <view class="weui-cell__ft">
                     <switch checked bindchange="switchChange"/>
                 </view>
+            </view>     
+ <picker  class="weui-cells weui-cells_after-title" bindchange="bindlanChange" value="{{lanIndex}}" range="{{languages}}">
+            <view  class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                <view class="weui-cell__bd">{{text.lan}}</view>
+                       
+                <view class="weui-cell__ft weui-cell__ft_in-access">{{lan}}</view>
+
             </view>
+                          </picker>
         </view>
-        
+
+
+
+
